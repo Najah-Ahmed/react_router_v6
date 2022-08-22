@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-const PostBlog = ({ posts, handleDelete }) => {
+const Posts = ({ posts, handleDelete }) => {
   const { id } = useParams();
   const post = posts.find((post) => post.id.toString() === id);
   return (
@@ -10,7 +10,12 @@ const PostBlog = ({ posts, handleDelete }) => {
             <h2>{post.title}</h2>
             <p className='postDate'>{post.datetime}</p>
             <p className='postBody'>{post.body}</p>
-            <button onClick={() => handleDelete(post.id)}>Delete</button>
+            <Link to={`/editpost/${post.id}`}>
+              <button className='editbtn'>Edit Post</button>
+            </Link>
+            <button className='deletebtn' onClick={() => handleDelete(post.id)}>
+              Delete
+            </button>
           </>
         )}
         {!post && (
@@ -27,4 +32,4 @@ const PostBlog = ({ posts, handleDelete }) => {
   );
 };
 
-export default PostBlog;
+export default Posts;
