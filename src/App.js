@@ -68,7 +68,7 @@ function App() {
   };
 
   return (
-    <main>
+    <>
       <Routes>
         <Route
           path='/'
@@ -96,7 +96,7 @@ function App() {
           <Route path='*' element={<Missing />} />
         </Route>
       </Routes>
-    </main>
+    </>
   );
 }
 
