@@ -11,6 +11,12 @@
       "title": "React Router v:6",
       "datetime": "22-08-2022 9:09:15 PM ",
       "body": "New way for routing different components in react"
+    },
+    {
+      "id": 4,
+      "title": "nextjs",
+      "datetime": "24-08-2022 9:25:41 AM ",
+      "body": "react server side rendering\n"
     }
   ]
 }
