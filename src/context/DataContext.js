@@ -1,6 +1,5 @@
 import { useState, useEffect, createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useWindowSize from '../hooks/useWindowSize'; // Custom Hooks
 import useAxiosFetch from '../hooks/useAxiosFetch'; // Custom Hooks
 import { format } from 'date-fns';
 
@@ -18,7 +17,6 @@ export const DataProvider = ({ children }) => {
   const navigate = useNavigate();
 
   // *** Custom Hooks
-  const { width } = useWindowSize();
   const { data, isLoading, fetchError } = useAxiosFetch(
     'http://localhost:3500/posts'
   );
@@ -83,7 +81,6 @@ export const DataProvider = ({ children }) => {
   return (
     <DataContext.Provider
       value={{
-        width,
         posts,
         search,
         setSearch,
