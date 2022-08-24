@@ -1,16 +1,18 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-// layouts
-import Layout from './Components/Layout';
+import useWindowSize from './hooks/useWindowSize'; // Custom Hooks
+import useAxiosFetch from './hooks/useAxiosFetch'; // Custom Hooks
+
+import Layout from './Components/Layout'; // layouts
 
 // pages
-import Home from './Components/pages/Home';
-import About from './Components/pages/About';
-import Contact from './Components/pages/Contact';
-import AddPost from './Components/pages/AddPost';
-import Posts from './Components/pages/Posts';
-import EditPost from './Components/pages/EditPost';
-import Missing from './Components/pages/Missing';
+import Home from './Components/pages/Home'; // from pages
+import About from './Components/pages/About'; // from pages
+import Contact from './Components/pages/Contact'; // from pages
+import AddPost from './Components/pages/AddPost'; // from pages
+import Posts from './Components/pages/Posts'; // from pages
+import EditPost from './Components/pages/EditPost'; // from pages
+import Missing from './Components/pages/Missing'; // from pages
 
 import { format } from 'date-fns';
 
@@ -26,23 +28,35 @@ function App() {
   const [editBody, setEditBody] = useState('');
   const navigate = useNavigate();
 
+  // *** Custom Hooks
+  const { width } = useWindowSize();
+  const { data, isLoading, fetchError } = useAxiosFetch(
+    'http://localhost:3500/posts'
+  );
+
+  // *** using Custom Hooks to Fetch Data from server
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await api.get('/posts');
-        setPosts(response.data);
-      } catch (err) {
-        if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else {
-          console.log(`Error: ${err.message}`);
-        }
-      }
-    };
-    fetchPosts();
-  }, []);
+    setPosts(data);
+  }, [data]);
+
+  // *** All way for fetching data from server ***
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     try {
+  //       const response = await api.get('/posts');
+  //       setPosts(response.data);
+  //     } catch (err) {
+  //       if (err.response) {
+  //         console.log(err.response.data);
+  //         console.log(err.response.status);
+  //         console.log(err.response.headers);
+  //       } else {
+  //         console.log(`Error: ${err.message}`);
+  //       }
+  //     }
+  //   };
+  //   fetchPosts();
+  // }, []);
 
   useEffect(() => {
     const filteredPosts = posts.filter(
@@ -104,9 +118,20 @@ function App() {
       <Routes>
         <Route
           path='/'
-          element={<Layout search={search} setSearch={setSearch} />}
+          element={
+            <Layout search={search} setSearch={setSearch} width={width} />
+          }
         >
-          <Route index element={<Home posts={searchResults} />} />
+          <Route
+            index
+            element={
+              <Home
+                posts={searchResults}
+                fetchError={fetchError}
+                isLoading={isLoading}
+              />
+            }
+          />
           <Route
             path='/add'
             element={
